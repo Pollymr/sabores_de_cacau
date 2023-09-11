@@ -1,0 +1,209 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyMyMFoxW2wBpoaXjlNe0yYy",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/Pollymr/sabores_de_cacau/blob/main/teste_sabores_cacau\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 1,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "OW-hme2k3mmd",
+        "outputId": "62531608-0c0f-451d-e509-efae4d72d3d9"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "       Company Specific Bean Origin\\nor Bar Name   REF  Review\\nDate  \\\n",
+            "0     A. Morin                       Agua Grande  1876          2016   \n",
+            "1     A. Morin                             Kpime  1676          2015   \n",
+            "2     A. Morin                            Atsane  1676          2015   \n",
+            "3     A. Morin                             Akata  1680          2015   \n",
+            "4     A. Morin                            Quilla  1704          2015   \n",
+            "...        ...                               ...   ...           ...   \n",
+            "1790    Zotter                              Peru   647          2011   \n",
+            "1791    Zotter                             Congo   749          2011   \n",
+            "1792    Zotter                      Kerala State   749          2011   \n",
+            "1793    Zotter                      Kerala State   781          2011   \n",
+            "1794    Zotter                Brazil, Mitzi Blue   486          2010   \n",
+            "\n",
+            "     Cocoa\\nPercent Company\\nLocation  Rating Bean\\nType Broad Bean\\nOrigin  \n",
+            "0               63%            France    3.75                      Sao Tome  \n",
+            "1               70%            France    2.75                          Togo  \n",
+            "2               70%            France    3.00                          Togo  \n",
+            "3               70%            France    3.50                          Togo  \n",
+            "4               70%            France    3.50                          Peru  \n",
+            "...             ...               ...     ...        ...                ...  \n",
+            "1790            70%           Austria    3.75                          Peru  \n",
+            "1791            65%           Austria    3.00  Forastero              Congo  \n",
+            "1792            65%           Austria    3.50  Forastero              India  \n",
+            "1793            62%           Austria    3.25                         India  \n",
+            "1794            65%           Austria    3.00                        Brazil  \n",
+            "\n",
+            "[1795 rows x 9 columns]\n"
+          ]
+        }
+      ],
+      "source": [
+        "import pandas as pd\n",
+        "\n",
+        "df = pd.read_csv('flavors_of_cacao.csv')\n",
+        "\n",
+        "print(df)\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "if 'Rating' in df.columns:\n",
+        "\n",
+        "    media_notas = df['Rating'].mean()\n",
+        "    print(f'A média das notas é: {media_notas:.2f}')\n",
+        "else:\n",
+        "    print(\"A coluna 'Rating' não foi encontrada no arquivo CSV.\")\n",
+        "\n",
+        "\n"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "smY7ZHbcERcY",
+        "outputId": "96817138-7c46-4c9a-adcb-b6eaf42eff5d"
+      },
+      "execution_count": 2,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "A média das notas é: 3.19\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "\n",
+        "if 'Rating' in df.columns:\n",
+        "\n",
+        "    media_por_estabelecimento = df.groupby(\"Company\")['Rating'].mean()\n",
+        "    estabelecimento_maior_media = media_por_estabelecimento.idxmax()\n",
+        "    maior_media = media_por_estabelecimento.max()\n",
+        "    print(f'O estabelecimento com a maior média de notas é o {estabelecimento_maior_media}, com uma média de {maior_media:.2f}')\n",
+        "else:\n",
+        "    print(\"A coluna 'Rating' não foi encontrada no arquivo CSV.\")\n"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "VQw_FrjTIP-r",
+        "outputId": "0954bcdc-e10e-464c-f1cb-789332443534"
+      },
+      "execution_count": 5,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "O estabelecimento com a maior média de notas é \"Tobago Estate (Pralus)\" com uma média de 4.00\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "\n",
+        "nova_linha= ['Cacau Show','São Paulo',171,2023,'100%', 'Brasil',4, 'forastero','Brazil']\n",
+        "\n",
+        "df.loc[len(df)] = nova_linha\n",
+        "\n",
+        "df.to_csv('sabores_de_cacau.csv', index=False)\n"
+      ],
+      "metadata": {
+        "id": "yqKk-TYBmSF1"
+      },
+      "execution_count": 21,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "print(df)"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "Pm7QseA_rJUr",
+        "outputId": "146ff5cd-0970-44bc-fee8-f01bbf67c66d"
+      },
+      "execution_count": 20,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "         Company Specific Bean Origin\\nor Bar Name   REF  Review\\nDate  \\\n",
+            "0       A. Morin                       Agua Grande  1876          2016   \n",
+            "1       A. Morin                             Kpime  1676          2015   \n",
+            "2       A. Morin                            Atsane  1676          2015   \n",
+            "3       A. Morin                             Akata  1680          2015   \n",
+            "4       A. Morin                            Quilla  1704          2015   \n",
+            "...          ...                               ...   ...           ...   \n",
+            "1791      Zotter                             Congo   749          2011   \n",
+            "1792      Zotter                      Kerala State   749          2011   \n",
+            "1793      Zotter                      Kerala State   781          2011   \n",
+            "1794      Zotter                Brazil, Mitzi Blue   486          2010   \n",
+            "1795  Cacau Show                         São Paulo   171          2023   \n",
+            "\n",
+            "     Cocoa\\nPercent Company\\nLocation  Rating Bean\\nType Broad Bean\\nOrigin  \n",
+            "0               63%            France    3.75                      Sao Tome  \n",
+            "1               70%            France    2.75                          Togo  \n",
+            "2               70%            France    3.00                          Togo  \n",
+            "3               70%            France    3.50                          Togo  \n",
+            "4               70%            France    3.50                          Peru  \n",
+            "...             ...               ...     ...        ...                ...  \n",
+            "1791            65%           Austria    3.00  Forastero              Congo  \n",
+            "1792            65%           Austria    3.50  Forastero              India  \n",
+            "1793            62%           Austria    3.25                         India  \n",
+            "1794            65%           Austria    3.00                        Brazil  \n",
+            "1795           100%            Brasil    4.00  forastero             Brazil  \n",
+            "\n",
+            "[1796 rows x 9 columns]\n"
+          ]
+        }
+      ]
+    }
+  ]
+}
